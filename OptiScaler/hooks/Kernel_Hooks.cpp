@@ -11,6 +11,7 @@
 #include <State.h>
 #include <Config.h>
 
+#include <atomic>
 #include <cwctype>
 #include <misc/IdentifyGpu.h>
 
@@ -89,14 +90,12 @@ static inline HMODULE CheckLoad(const std::wstring& name)
 // AmpereMfg internal mode (plan §6b): after the first successful lazy load of nvngx_dlssg.dll, log which
 // module the handle actually resolved to - the decisive substitution triage line. Shared by the A/W
 // GetModuleHandle masquerade hooks; fires exactly once per process.
-static bool s_ampereMfgDlssgIdentityLogged = false;
+static std::atomic<bool> s_ampereMfgDlssgIdentityLogged { false };
 
 static inline void LogAmpereMfgDlssgIdentity(HMODULE module)
 {
-    if (!State::Instance().ampereMfgInternalActive || s_ampereMfgDlssgIdentityLogged)
+    if (!State::Instance().ampereMfgInternalActive || s_ampereMfgDlssgIdentityLogged.exchange(true))
         return;
-
-    s_ampereMfgDlssgIdentityLogged = true;
 
     wchar_t modulePath[MAX_PATH] {};
     if (GetModuleFileNameW(module, modulePath, MAX_PATH) == 0)

@@ -190,7 +190,8 @@ class State
 
     // Ampere MFG (SM86/SM75 sideload unlock): mirror of the parsed DLSSG.AmpereMfgMode value
     AmpereMfgMode ampereMfgMode = AmpereMfgMode::External;
-    bool ampereMfgInternalActive = false; // SLICE 2: set once at startup (unlock && mode==Internal && !External && !fsrfg-fallback); startup-only
+    // Set once at startup (unlock && mode==Internal && !External && !fsrfg-fallback); startup-only
+    bool ampereMfgInternalActive = false;
 
     // Streamline FG inputs
     Sl_Inputs_Dx12 slFGInputs = {};

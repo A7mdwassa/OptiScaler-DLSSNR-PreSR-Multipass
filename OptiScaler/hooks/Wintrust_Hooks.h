@@ -32,8 +32,8 @@ static LONG hkWinVerifyTrust(HWND hwnd, GUID* pgActionID, LPVOID pWVTData)
 
     // This generally isn't needed but for some reason, when using SpecialK, our hooked CreateFileW doesn't get called
     // and WinVerifyTrust fails as nvngx.dll doesn't exist
-    // "_nvngx.dll" is the real DriverStore NGXCore and must validate against its OWN signature: the substring
-    // "nvngx.dll" matches it, and this redirect would poison sl.common's NGX bootstrap (same hazard the attr/CreateFile hooks exclude).
+    // "_nvngx.dll" is the real DriverStore NGXCore and must validate against its OWN signature:
+    // the substring "nvngx.dll" matches it, and this redirect would poison sl.common's NGX bootstrap.
     if (path.contains("nvngx.dll") && !path.contains("_nvngx.dll") && !path.contains("nvngx.dll_") &&
         State::Instance().nvngxReplacement.has_value())
     {

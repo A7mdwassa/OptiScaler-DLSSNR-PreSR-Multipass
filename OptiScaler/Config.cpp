@@ -1148,12 +1148,11 @@ bool Config::SaveIni(std::filesystem::path destination)
             adaUnlock = false;
 
         ini.SetValue("FrameGen", "Enabled", GetBoolValue(Instance()->FGEnabled.value_for_config()).c_str());
-        ini.SetValue(
-            "FrameGen", "External",
-            GetBoolValue(Instance()->ExternalFrameGeneration.value_for_config_or(false) ||
-                         (ampereUnlock &&
-                          Instance()->FGDLSSGAmpereMfgMode.value_for_config_or("External") != "Internal"))
-                .c_str());
+        ini.SetValue("FrameGen", "External",
+                     GetBoolValue(Instance()->ExternalFrameGeneration.value_for_config_or(false) ||
+                                  (ampereUnlock &&
+                                   Instance()->FGDLSSGAmpereMfgMode.value_for_config_or("External") != "Internal"))
+                         .c_str());
         ini.SetValue("DLSSG", "AdaMfgUnlock", GetBoolValue(adaUnlock).c_str());
         ini.SetValue("DLSSG", "AdaBlackwellKernels",
                      GetBoolValue(Instance()->FGDLSSGAdaBlackwellKernels.value_for_config()).c_str());
